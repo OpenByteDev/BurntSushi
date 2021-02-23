@@ -1,0 +1,10 @@
+﻿GetWindowText
+GetWindowTextLength
+GetWindowThreadProcessId
+GetWindow
+GW_OWNER
+EnumThreadWindows
+TranslateMessage
+DispatchMessage
+GetMessage
+GetClassName
