@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InjectionPayload", "Injecti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interop", "Interop\Interop.csproj", "{F38F98EE-C8B2-4998-8382-1DCF1CF277AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BurntSushi.Shared", "BurntSushi.Shared\BurntSushi.Shared.csproj", "{42824F40-5F3D-4AEF-9562-868ACB221C00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurntSushi.Shared", "BurntSushi.Shared\BurntSushi.Shared.csproj", "{42824F40-5F3D-4AEF-9562-868ACB221C00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

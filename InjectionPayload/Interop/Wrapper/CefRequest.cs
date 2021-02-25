@@ -8,7 +8,7 @@ namespace InjectionPayload {
             underlying = request;
         }
 
-        public string GetUrl() {
+        public string? GetUrl() {
             var ptr = cef_request_t.get_url(underlying);
             using var userfree = new CefStringUserfree(ptr);
             return userfree.ToString();

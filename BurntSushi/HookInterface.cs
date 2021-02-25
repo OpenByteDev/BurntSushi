@@ -1,23 +1,17 @@
 ﻿using System;
 using BurntSushi.Shared;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace BurntSushi {
     /// <summary>
     /// Provides an interface for communicating from the injected dll to the injector (server).
     /// </summary>
     public class HookInterface : AbstractHookInterface {
-        private readonly ILogger logger;
-
-        public HookInterface(ILogger logger) {
-            this.logger = logger;
-        }
-
         public override void LogInfo(string message) {
-            logger.LogInformation(message);
+            Log.Information(message);
         }
         public override void LogError(string message) {
-            logger.LogError(message);
+            Log.Error(message);
         }
         public override void LogException(Exception exception) {
             LogException("The target process has reported an error:", exception);

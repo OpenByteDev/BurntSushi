@@ -92,8 +92,8 @@ namespace InjectionPayload {
             try {
                 var url = Marshal.PtrToStringAnsi(node);
 
-                var block = RequestFilter.Whitelist.Any(pattern => pattern.WildcardMatch(url, true));
-                LogRequest(nameof(cef_urlrequest_create), url, block);
+                var block = !RequestFilter.Whitelist.Any(pattern => pattern.WildcardMatch(url, true));
+                LogRequest(nameof(getaddrinfo), url, block);
                 if (block)
                     return 0;
             } catch (Exception e) {

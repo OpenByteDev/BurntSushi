@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 using BurntSushi.Extensions;
 using BurntSushi.Interop;
 using BurntSushi.Spotify;
@@ -38,21 +39,40 @@ namespace BurntSushi {
             }
         }
 
+        /// <summary>
+        /// Occurs whenever a new spotify process is hooked or an exisiting one is unhooked.
+        /// </summary>
         public event EventHandler<EventArgs>? HookChanged;
 
+        /// <summary>
+        /// The main window process if spotify is running.
+        /// </summary>
         public Process? MainWindowProcess { get; private set; }
+        /// <summary>
+        /// The main window handle if spotify is running.
+        /// </summary>
+        public IntPtr MainWindowHandle { get; private set; }
 
         private readonly WindowEventHook _windowCreationEventHook = new(WindowEvent.EVENT_OBJECT_SHOW);
+        private readonly WindowEventHook _windowDestructionEventHook = new(WindowEvent.EVENT_OBJECT_DESTROY);
         private readonly ReentrancySafeEventProcessor<IntPtr> _windowCreationEventProcessor;
+        private readonly ReentrancySafeEventProcessor<IntPtr> _windowDestructionEventProcessor;
 
         public SpotifyProcessListener() {
             _windowCreationEventHook.EventReceived += WindowCreationEventReceived;
+            _windowDestructionEventHook.EventReceived += WindowDestructionEventReceived;
             _windowCreationEventProcessor = new ReentrancySafeEventProcessor<IntPtr>(HandleWindowCreation);
+            _windowDestructionEventProcessor = new ReentrancySafeEventProcessor<IntPtr>(HandleWindowDestruction);
         }
 
         public void Activate() {
             _windowCreationEventHook.HookGlobal();
             TryHookSpotify();
+        }
+
+        public void RunMessagePump(CancellationToken cancellationToken = default) {
+            using var pump = new DummyMessagePump();
+            pump.Run(cancellationToken);
         }
 
         public void Deactivate() {
@@ -141,6 +161,36 @@ namespace BurntSushi {
             _windowCreationEventProcessor.FlushQueue();
         }
 
+        private void WindowDestructionEventReceived(object sender, WinEventHookEventArgs e) {
+            // ignore event if we are already unhooked.
+            if (!IsHooked)
+                return;
+
+            // make sure that the destroyed control was a window.
+            if (!IsWindowEvent(e))
+                return;
+
+            // make sure that the destroyed window was the main one.
+            if (e.WindowHandle != MainWindowHandle)
+                return;
+
+            // queue events and handle one after another
+            // needed because this method gets called multiple times by the same thread at the same time (reentrant)
+            _windowDestructionEventProcessor.EnqueueAndProcess(e.WindowHandle);
+        }
+
+        private void HandleWindowDestruction(IntPtr windowHandle) {
+            _windowDestructionEventProcessor.FlushQueue();
+
+            if (MainWindowProcess == null)
+                return;
+
+            // if (!MainWindowProcess.HasExited)
+            //    return;
+
+            OnSpotifyClosed();
+        }
+
         /// <summary>
         /// OnSpotifyHooked is called whenever spotify is hooked.
         /// </summary>
@@ -150,13 +200,14 @@ namespace BurntSushi {
             if (IsHooked)
                 return;
 
+            MainWindowProcess = mainProcess;
+            MainWindowHandle = mainWindowHandle;
+
             if (_windowCreationEventHook.Hooked)
                 _windowCreationEventHook.Unhook();
 
-            mainProcess.EnableRaisingEvents = true;
-            mainProcess.Exited += (s, e) => OnSpotifyClosed();
+            _windowDestructionEventHook.HookToProcess(MainWindowProcess);
 
-            MainWindowProcess = mainProcess;
             IsHooked = true;
         }
 
@@ -167,6 +218,7 @@ namespace BurntSushi {
             ClearHookData();
 
             _windowCreationEventHook.HookGlobal();
+
             // scan for spotify to make sure it did not start again while we were shutting down.
             TryHookSpotify();
         }
@@ -176,7 +228,10 @@ namespace BurntSushi {
         /// </summary>
         protected void ClearHookData() {
             IsHooked = false;
+            MainWindowProcess = null;
+            MainWindowHandle = IntPtr.Zero;
             _windowCreationEventHook.TryUnhook();
+            _windowDestructionEventHook.TryUnhook();
         }
 
         private void RaiseHookChanged() =>
@@ -190,7 +245,9 @@ namespace BurntSushi {
         }
 
         public void Dispose() {
+            MainWindowProcess?.Dispose();
             _windowCreationEventHook?.Dispose();
+            _windowDestructionEventHook?.Dispose();
         }
     }
 }

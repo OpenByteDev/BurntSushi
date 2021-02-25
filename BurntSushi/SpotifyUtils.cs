@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using BurntSushi.Interop;
+using Serilog;
 
 namespace BurntSushi.Spotify {
     public static class SpotifyUtils {
@@ -32,7 +33,7 @@ namespace BurntSushi.Spotify {
         }
 
         public static bool IsMainSpotifyWindow(IntPtr windowHandle) {
-            var windowTitle = NativeUtils.GetWindowTitle(windowHandle);
+            var windowTitle = NativeUtils.TryGetWindowTitle(windowHandle);
 
             if (string.IsNullOrWhiteSpace(windowTitle))
                 return false;

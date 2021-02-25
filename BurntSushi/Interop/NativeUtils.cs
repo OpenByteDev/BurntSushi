@@ -8,12 +8,15 @@ using Microsoft.Windows.Sdk;
 namespace BurntSushi.Interop {
     internal static class NativeUtils {
         public static string GetWindowTitle(IntPtr handle) {
+            return TryGetWindowTitle(handle) ?? throw new Win32Exception();
+        }
+        public static string? TryGetWindowTitle(IntPtr handle) {
             var titleLength = PInvoke.GetWindowTextLength((HWND)handle);
             if (titleLength == 0)
                 return string.Empty;
             var title = new string('\0', titleLength);
             if (PInvoke.GetWindowText((HWND)handle, title, titleLength + 1) == 0)
-                throw new Win32Exception(Marshal.GetLastWin32Error());
+                return null;
             return title;
         }
 
@@ -37,8 +40,6 @@ namespace BurntSushi.Interop {
                 PInvoke.EnumThreadWindows((uint)thread.Id, callback, default);
                 thread.Dispose();
             }
-
-            GC.KeepAlive(handles);
             GC.KeepAlive(callback);
 
             return handles;
@@ -52,6 +53,24 @@ namespace BurntSushi.Interop {
                 throw new Win32Exception();
 
             return name.AsSpan(0, actualNameLength);
+        }
+
+        public static HWND CreateMessageOnlyWindow() {
+            unsafe {
+                return PInvoke.CreateWindowEx(
+                     default,
+                     lpClassName: "STATIC", // pre-defined message class
+                     default,
+                     default,
+                     default,
+                     default,
+                     default,
+                     default,
+                     Constants.HWND_MESSAGE, // creates a message-only window
+                     NullSafeHandle.NullHandle,
+                     NullSafeHandle.NullHandle,
+                     default);
+            }
         }
     }
 }
