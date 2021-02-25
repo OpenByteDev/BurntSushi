@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.PersistentFile;
 
 namespace BurntSushi {
     public static class Program {
@@ -40,14 +41,19 @@ namespace BurntSushi {
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console(minLogLevel, outputTemplate)
-                .WriteTo.File(logFilePath, minLogLevel, outputTemplate)
+                .WriteTo.File(logFilePath, minLogLevel, outputTemplate,
+                        fileSizeLimitBytes: 1024 * 1024,
+                        retainedFileCountLimit: 5,
+                        buffered: true,
+                        preserveLogFilename: true,
+                        flushToDiskInterval: TimeSpan.FromMinutes(1))
                 .CreateLogger();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureLogging(loggingBuilder => loggingBuilder.ClearProviders())
-                .ConfigureServices((_, services) => services.AddHostedService<Worker>())
+                .ConfigureServices(services => services.AddHostedService<Worker>())
                 .UseWindowsService();
     }
 }
