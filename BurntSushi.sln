@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interop", "Interop\Interop.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurntSushi.Shared", "BurntSushi.Shared\BurntSushi.Shared.csproj", "{42824F40-5F3D-4AEF-9562-868ACB221C00}"
 EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Installer", "Installer\Installer.wixproj", "{1D4E7201-D41C-451E-B7EF-3210EA209652}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,14 @@ Global
 		{42824F40-5F3D-4AEF-9562-868ACB221C00}.Release|x64.Build.0 = Release|Any CPU
 		{42824F40-5F3D-4AEF-9562-868ACB221C00}.Release|x86.ActiveCfg = Release|Any CPU
 		{42824F40-5F3D-4AEF-9562-868ACB221C00}.Release|x86.Build.0 = Release|Any CPU
+		{1D4E7201-D41C-451E-B7EF-3210EA209652}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{1D4E7201-D41C-451E-B7EF-3210EA209652}.Debug|x64.ActiveCfg = Debug|x86
+		{1D4E7201-D41C-451E-B7EF-3210EA209652}.Debug|x86.ActiveCfg = Debug|x86
+		{1D4E7201-D41C-451E-B7EF-3210EA209652}.Debug|x86.Build.0 = Debug|x86
+		{1D4E7201-D41C-451E-B7EF-3210EA209652}.Release|Any CPU.ActiveCfg = Release|x86
+		{1D4E7201-D41C-451E-B7EF-3210EA209652}.Release|x64.ActiveCfg = Release|x86
+		{1D4E7201-D41C-451E-B7EF-3210EA209652}.Release|x86.ActiveCfg = Release|x86
+		{1D4E7201-D41C-451E-B7EF-3210EA209652}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
