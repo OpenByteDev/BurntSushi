@@ -7,7 +7,7 @@ using Microsoft.Win32.SafeHandles;
 using Microsoft.Windows.Sdk;
 
 namespace BurntSushi {
-    internal sealed class DummyMessagePump : CriticalFinalizerObject, IDisposable {
+    public class DummyMessagePump : CriticalFinalizerObject, IDisposable {
         private static readonly SafeFileHandle NullFileHandle = new(default, false);
         private HWND hwnd;
         public bool IsRunning => hwnd.Value != default;
@@ -56,7 +56,7 @@ namespace BurntSushi {
         #region IDisposable
         private bool isDisposed;
 
-        private void Dispose(bool disposing) {
+        protected virtual void Dispose(bool disposing) {
             if (!isDisposed) {
                 TryStop(false);
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using BurntSushi.Interop;
-using Serilog;
 
 namespace BurntSushi.Spotify {
     public static class SpotifyUtils {

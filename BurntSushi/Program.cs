@@ -2,10 +2,10 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Windows.Sdk;
 using Serilog;
 using Serilog.Events;
-using Microsoft.Windows.Sdk;
-using System.Threading.Tasks;
 
 namespace BurntSushi {
     public static class Program {
@@ -107,11 +107,16 @@ namespace BurntSushi {
             listener.Activate();
             Log.Information("Started Spotify Listener");
 
-            listener.RunMessagePump(cancellationToken);
+            RunMessagePump(cancellationToken);
 
             listener.Deactivate();
             sushi?.Dispose();
             Log.Information("Stopped Spotify Listener");
+
+            static void RunMessagePump(CancellationToken cancellationToken = default) {
+                using var pump = new DummyMessagePump();
+                pump.Run(cancellationToken);
+            }
         }
 
         private static void Inject(Process process) {

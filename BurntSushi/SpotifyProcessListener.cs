@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading;
 using BurntSushi.Extensions;
 using BurntSushi.Interop;
 using BurntSushi.Spotify;
@@ -68,11 +67,6 @@ namespace BurntSushi {
         public void Activate() {
             _windowCreationEventHook.HookGlobal();
             TryHookSpotify();
-        }
-
-        public void RunMessagePump(CancellationToken cancellationToken = default) {
-            using var pump = new DummyMessagePump();
-            pump.Run(cancellationToken);
         }
 
         public void Deactivate() {
