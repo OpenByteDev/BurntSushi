@@ -21,7 +21,8 @@ namespace BurntSushi {
             // if the app is started from a console the logs are shown directly in the parent console
             // and it is blocked until this app exits.
             // (Windows Application + AttachConsole does not block the parent console)
-            PInvoke.FreeConsole();
+            if (PInvoke.AttachConsole(Constants.ATTACH_PARENT_PROCESS))
+                PInvoke.FreeConsole();
             PInvoke.AttachConsole(Constants.ATTACH_PARENT_PROCESS);
 
             // handle exit events (probably overkill)
