@@ -20,7 +20,7 @@ namespace BurntSushi {
             var server = RemoteHooking.IpcCreateServer<HookInterface>(ref channelName, WellKnownObjectMode.Singleton);
 
             // Get the full path to the assembly we want to inject into the target process
-            string injectionLibrary = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "InjectionPayload.dll");
+            var injectionLibrary = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "InjectionPayload.dll");
 
             // inject into existing process
             RemoteHooking.Inject(

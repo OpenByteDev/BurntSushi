@@ -16,3 +16,7 @@ WM_CLOSE
 WM_DESTROY
 PostQuitMessage
 PostMessage
+AttachConsole
+FreeConsole
+SetConsoleCtrlHandler
+GetConsoleWindow

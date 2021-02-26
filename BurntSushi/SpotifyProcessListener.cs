@@ -245,6 +245,7 @@ namespace BurntSushi {
         }
 
         public void Dispose() {
+            GC.SuppressFinalize(this);
             MainWindowProcess?.Dispose();
             _windowCreationEventHook?.Dispose();
             _windowDestructionEventHook?.Dispose();
