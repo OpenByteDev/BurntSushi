@@ -10,7 +10,7 @@
     <Feature Id="ProductFeature" Title="Installer" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
     </Feature>
-
+    
     <UI Id="WixUI_InstallDir">
       <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
       <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
@@ -34,7 +34,7 @@
       <Publish Dialog="BrowseDlg" Control="OK" Event="SpawnDialog" Value="InvalidDirDlg" Order="4"><![CDATA[WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
 
       <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
-      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+      <!--Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish-->
 
       <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg">NOT Installed</Publish>
       <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">
@@ -43,24 +43,16 @@
       </Publish>
 
       <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
-      <Publish Dialog="InstallDirDlg" Control="Next" Event="SetTargetPath"
-  Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
-      <Publish Dialog="InstallDirDlg" Control="Next" Event="DoAction" Value="WixUIValidatePath"
-  Order="2">NOT WIXUI_DONTVALIDATEPATH</Publish>
-      <Publish Dialog="InstallDirDlg" Control="Next" Event="SpawnDialog" Value="InvalidDirDlg"
-  Order="3"><![CDATA[NOT WIXUI_DONTVALIDATEPATH AND WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
-      <Publish Dialog="InstallDirDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg"
-  Order="4">WIXUI_DONTVALIDATEPATH OR WIXUI_INSTALLDIR_VALID="1"</Publish>
-      <Publish Dialog="InstallDirDlg" Control="ChangeFolder" Property="_BrowseProperty"
-  Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="SetTargetPath" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="DoAction" Value="WixUIValidatePath" Order="2">NOT WIXUI_DONTVALIDATEPATH</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="SpawnDialog" Value="InvalidDirDlg" Order="3"><![CDATA[NOT WIXUI_DONTVALIDATEPATH AND WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="4">WIXUI_DONTVALIDATEPATH OR WIXUI_INSTALLDIR_VALID="1"</Publish>
+      <Publish Dialog="InstallDirDlg" Control="ChangeFolder" Property="_BrowseProperty" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
       <Publish Dialog="InstallDirDlg" Control="ChangeFolder" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
 
-      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="InstallDirDlg"
-  Order="1">NOT Installed</Publish>
-      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg"
-  Order="2">Installed AND NOT PATCH</Publish>
-      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg"
-  Order="2">Installed AND PATCH</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="InstallDirDlg" Order="1">NOT Installed</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="2">Installed AND NOT PATCH</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">Installed AND PATCH</Publish>
 
       <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
 
@@ -72,9 +64,16 @@
     </UI>
     <UIRef Id="WixUI_Common" />
 
-    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch BurntSushi" />
-    <Property Id="WixShellExecTarget" Value="[#BurntSushi.exe]" />
-    <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+    <!--CustomAction Id="LaunchApplication"
+         FileKey="BurntSushi.exe"
+         ExeCommand=""
+         Execute="immediate"
+         Impersonate="yes"
+         Return="asyncNoWait" />
+    
+    <InstallExecuteSequence>
+      <Custom Action="LaunchApplication" After="InstallFiles" />
+    </InstallExecuteSequence-->
     
   </Product>
   
@@ -93,87 +92,37 @@
         <Component Id="EasyHook32.dll" Guid="0a26c21c-7c22-4aaf-b820-c243b2b8942b">
           <File Id="EasyHook32.dll" Name="EasyHook32.dll" Source="$(var.BurntSushi.TargetDir)EasyHook32.dll" />
         </Component>
-        <Component Id="Microsoft.Extensions.FileProviders.Abstractions.dll" Guid="def7800a-b69c-4f89-bc8c-2b5405272905">
-          <File Id="Microsoft.Extensions.FileProviders.Abstractions.dll" Name="Microsoft.Extensions.FileProviders.Abstractions.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.FileProviders.Abstractions.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Options.dll" Guid="18997e19-4268-4e97-b8fc-9d23025b01a8">
-          <File Id="Microsoft.Extensions.Options.dll" Name="Microsoft.Extensions.Options.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Options.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Logging.Abstractions.dll" Guid="e4d44cfd-2606-4459-b178-1e2148d6faef">
-          <File Id="Microsoft.Extensions.Logging.Abstractions.dll" Name="Microsoft.Extensions.Logging.Abstractions.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Logging.Abstractions.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.DependencyInjection.dll" Guid="5ed77fd8-5d6f-4580-8b69-20a13549af9c">
-          <File Id="Microsoft.Extensions.DependencyInjection.dll" Name="Microsoft.Extensions.DependencyInjection.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.DependencyInjection.dll" />
-        </Component>
-        <Component Id="System.Diagnostics.DiagnosticSource.dll" Guid="6f8b188c-4a1d-49b7-aa4d-59043d549cfa">
-          <File Id="System.Diagnostics.DiagnosticSource.dll" Name="System.Diagnostics.DiagnosticSource.dll" Source="$(var.BurntSushi.TargetDir)System.Diagnostics.DiagnosticSource.dll" />
-        </Component>
+        
+        
+        
+        
+        
         <Component Id="System.Numerics.Vectors.dll" Guid="24f88eec-ad64-4285-8e15-970e3ce42155">
           <File Id="System.Numerics.Vectors.dll" Name="System.Numerics.Vectors.dll" Source="$(var.BurntSushi.TargetDir)System.Numerics.Vectors.dll" />
         </Component>
-        <Component Id="Microsoft.Extensions.Configuration.dll" Guid="fcde5b7a-50ec-4281-8195-6f6d4bbc67d7">
-          <File Id="Microsoft.Extensions.Configuration.dll" Name="Microsoft.Extensions.Configuration.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Configuration.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.FileProviders.Physical.dll" Guid="b1196813-bdfc-4073-aeab-2562fbfde7ce">
-          <File Id="Microsoft.Extensions.FileProviders.Physical.dll" Name="Microsoft.Extensions.FileProviders.Physical.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.FileProviders.Physical.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.FileSystemGlobbing.dll" Guid="e65a6b8a-fc87-4680-b8f5-9078b0926658">
-          <File Id="Microsoft.Extensions.FileSystemGlobbing.dll" Name="Microsoft.Extensions.FileSystemGlobbing.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.FileSystemGlobbing.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Configuration.FileExtensions.dll" Guid="7dd26d28-7e48-4d0d-9762-c05605973659">
-          <File Id="Microsoft.Extensions.Configuration.FileExtensions.dll" Name="Microsoft.Extensions.Configuration.FileExtensions.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Configuration.FileExtensions.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Configuration.EnvironmentVariables.dll" Guid="f1abb99e-e144-4a0c-a3f8-0da6f45f7284">
-          <File Id="Microsoft.Extensions.Configuration.EnvironmentVariables.dll" Name="Microsoft.Extensions.Configuration.EnvironmentVariables.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Configuration.EnvironmentVariables.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Configuration.CommandLine.dll" Guid="2b7580fb-8f43-4003-9029-c533351f8a17">
-          <File Id="Microsoft.Extensions.Configuration.CommandLine.dll" Name="Microsoft.Extensions.Configuration.CommandLine.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Configuration.CommandLine.dll" />
-        </Component>
-        <Component Id="System.Threading.Tasks.Extensions.dll" Guid="7c867cd5-66f7-4759-83dd-fc02cb162e33">
-          <File Id="System.Threading.Tasks.Extensions.dll" Name="System.Threading.Tasks.Extensions.dll" Source="$(var.BurntSushi.TargetDir)System.Threading.Tasks.Extensions.dll" />
-        </Component>
-        <Component Id="System.Text.Encodings.Web.dll" Guid="86894565-a8b9-4aac-9787-b77214b1c59a">
-          <File Id="System.Text.Encodings.Web.dll" Name="System.Text.Encodings.Web.dll" Source="$(var.BurntSushi.TargetDir)System.Text.Encodings.Web.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Configuration.UserSecrets.dll" Guid="3978d44c-7016-4634-abbd-7f8ed524cb0e">
-          <File Id="Microsoft.Extensions.Configuration.UserSecrets.dll" Name="Microsoft.Extensions.Configuration.UserSecrets.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Configuration.UserSecrets.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Options.ConfigurationExtensions.dll" Guid="c57f69e6-cdaf-4e0e-9820-59065a97f46e">
-          <File Id="Microsoft.Extensions.Options.ConfigurationExtensions.dll" Name="Microsoft.Extensions.Options.ConfigurationExtensions.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Options.ConfigurationExtensions.dll" />
-        </Component>
-        <Component Id="System.ServiceProcess.ServiceController.dll" Guid="e6a53e85-df07-4533-9df5-13c9b6f5de43">
-          <File Id="System.ServiceProcess.ServiceController.dll" Name="System.ServiceProcess.ServiceController.dll" Source="$(var.BurntSushi.TargetDir)System.ServiceProcess.ServiceController.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Logging.Configuration.dll" Guid="661ca304-59d2-4334-b89f-7fbd5af71024">
-          <File Id="Microsoft.Extensions.Logging.Configuration.dll" Name="Microsoft.Extensions.Logging.Configuration.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Logging.Configuration.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Logging.EventLog.dll" Guid="ab6bf819-bd5e-401b-b298-028fd3c16219">
-          <File Id="Microsoft.Extensions.Logging.EventLog.dll" Name="Microsoft.Extensions.Logging.EventLog.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Logging.EventLog.dll" />
-        </Component>
-        <Component Id="System.Text.Json.dll" Guid="78e5a36e-5062-4bd2-80ef-a05b2828b880">
-          <File Id="System.Text.Json.dll" Name="System.Text.Json.dll" Source="$(var.BurntSushi.TargetDir)System.Text.Json.dll" />
-        </Component>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <Component Id="WildcardMatch.dll" Guid="44755bcf-af59-4f00-8b2f-ec17007aa667">
           <File Id="WildcardMatch.dll" Name="WildcardMatch.dll" Source="$(var.BurntSushi.TargetDir)WildcardMatch.dll" />
         </Component>
-        <Component Id="Microsoft.Extensions.Logging.dll" Guid="00f86838-a76a-45fe-abb2-76fa3a45eeb8">
-          <File Id="Microsoft.Extensions.Logging.dll" Name="Microsoft.Extensions.Logging.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Logging.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Primitives.dll" Guid="a2f4c494-82b5-4ccc-9a84-ce513da85aa9">
-          <File Id="Microsoft.Extensions.Primitives.dll" Name="Microsoft.Extensions.Primitives.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Primitives.dll" />
-        </Component>
-        <Component Id="System.ValueTuple.dll" Guid="3177b426-bb0e-4597-a3a6-b1df33278b9f">
-          <File Id="System.ValueTuple.dll" Name="System.ValueTuple.dll" Source="$(var.BurntSushi.TargetDir)System.ValueTuple.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Configuration.Abstractions.dll" Guid="e289c3b2-3a76-4cd4-a365-b8bc541abe63">
-          <File Id="Microsoft.Extensions.Configuration.Abstractions.dll" Name="Microsoft.Extensions.Configuration.Abstractions.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Configuration.Abstractions.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Hosting.WindowsServices.dll" Guid="7ba88a97-8141-498d-8abd-aa60c1b2219d">
-          <File Id="Microsoft.Extensions.Hosting.WindowsServices.dll" Name="Microsoft.Extensions.Hosting.WindowsServices.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Hosting.WindowsServices.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Hosting.dll" Guid="4ee86d78-50e8-4e05-8619-3dfb57bc5e6d">
-          <File Id="Microsoft.Extensions.Hosting.dll" Name="Microsoft.Extensions.Hosting.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Hosting.dll" />
-        </Component>
+        
+        
+        
+        
+        
+        
         <Component Id="Serilog.Sinks.PersistentFile.dll" Guid="fd7257c0-d389-4f84-8da7-01736783e817">
           <File Id="Serilog.Sinks.PersistentFile.dll" Name="Serilog.Sinks.PersistentFile.dll" Source="$(var.BurntSushi.TargetDir)Serilog.Sinks.PersistentFile.dll" />
         </Component>
@@ -189,12 +138,8 @@
         <Component Id="WinEventHook.dll" Guid="4674ee5a-6233-4e73-886d-06a0876af2c9">
           <File Id="WinEventHook.dll" Name="WinEventHook.dll" Source="$(var.BurntSushi.TargetDir)WinEventHook.dll" />
         </Component>
-        <Component Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Guid="3a100cd1-36ee-4cd2-8049-8d71196887b5">
-          <File Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Name="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Hosting.Abstractions.dll" Guid="8638c865-abaf-4442-baba-cdfb922bc1a8">
-          <File Id="Microsoft.Extensions.Hosting.Abstractions.dll" Name="Microsoft.Extensions.Hosting.Abstractions.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Hosting.Abstractions.dll" />
-        </Component>
+        
+        
         <Component Id="System.Runtime.CompilerServices.Unsafe.dll" Guid="f633afd1-fe2d-4c0a-ad21-6d04d9d798b0">
           <File Id="System.Runtime.CompilerServices.Unsafe.dll" Name="System.Runtime.CompilerServices.Unsafe.dll" Source="$(var.BurntSushi.TargetDir)System.Runtime.CompilerServices.Unsafe.dll" />
         </Component>
@@ -243,30 +188,19 @@
         <Component Id="System.Buffers.dll" Guid="229a2f9e-06d8-4fdf-b313-2f1ad5e12640">
           <File Id="System.Buffers.dll" Name="System.Buffers.dll" Source="$(var.BurntSushi.TargetDir)System.Buffers.dll" />
         </Component>
-        <Component Id="Microsoft.Bcl.AsyncInterfaces.dll" Guid="5c71829d-6b8c-4cf2-a16a-8f12ac1f1fb6">
-          <File Id="Microsoft.Bcl.AsyncInterfaces.dll" Name="Microsoft.Bcl.AsyncInterfaces.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Bcl.AsyncInterfaces.dll" />
-        </Component>
+        
         <Component Id="InjectionPayload.dll" Guid="27d1c312-e88b-43e0-988c-096c6281a939">
           <File Id="InjectionPayload.dll" Name="InjectionPayload.dll" Source="$(var.InjectionPayload.TargetDir)InjectionPayload.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Configuration.Binder.dll" Guid="d1f324be-56f0-40d7-94bf-bbe0c0e4ed13">
-          <File Id="Microsoft.Extensions.Configuration.Binder.dll" Name="Microsoft.Extensions.Configuration.Binder.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Configuration.Binder.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Logging.EventSource.dll" Guid="c2264542-867b-4c0a-8d07-98fd863f030f">
-          <File Id="Microsoft.Extensions.Logging.EventSource.dll" Name="Microsoft.Extensions.Logging.EventSource.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Logging.EventSource.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Logging.Debug.dll" Guid="8bfa7729-8568-4f6f-b300-3e5f1606a03f">
-          <File Id="Microsoft.Extensions.Logging.Debug.dll" Name="Microsoft.Extensions.Logging.Debug.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Logging.Debug.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Logging.Console.dll" Guid="a908d268-328f-4ab3-bb6c-4ef4b6700f08">
-          <File Id="Microsoft.Extensions.Logging.Console.dll" Name="Microsoft.Extensions.Logging.Console.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Logging.Console.dll" />
-        </Component>
-        <Component Id="Microsoft.Extensions.Configuration.Json.dll" Guid="63420d7c-f182-460f-9d81-3e3bafad3503">
-          <File Id="Microsoft.Extensions.Configuration.Json.dll" Name="Microsoft.Extensions.Configuration.Json.dll" Source="$(var.BurntSushi.TargetDir)Microsoft.Extensions.Configuration.Json.dll" />
         </Component>
         <Component Id="BurntSushi.exe.config" Guid="a583ef2c-bcbd-4660-b0d1-f4c308c72c41">
           <File Id="BurntSushi.exe.config" Name="BurntSushi.exe.config" Source="$(var.BurntSushi.TargetDir)BurntSushi.exe.config" />
         </Component>
+        
+        
+        
+        
+        
+        
       </ComponentGroup>
     </Fragment>
 </Wix>
