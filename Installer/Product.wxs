@@ -164,12 +164,7 @@
         <Component Id="Interop.dll" Guid="8ae46122-25f5-4bf7-884f-d50d78753377">
           <File Id="Interop.dll" Name="Interop.dll" Source="$(var.Interop.TargetDir)Interop.dll" />
         </Component>
-        <Component Id="appsettings.json" Guid="26045868-6f92-4dfb-b269-3e678f2d601f">
-          <File Id="appsettings.json" Name="appsettings.json" Source="$(var.BurntSushi.TargetDir)appsettings.json" />
-        </Component>
-        <Component Id="appsettings.Development.json" Guid="e1c5a9cd-158e-4cba-a9ec-969cf18aee0a">
-          <File Id="appsettings.Development.json" Name="appsettings.Development.json" Source="$(var.BurntSushi.TargetDir)appsettings.Development.json" />
-        </Component>
+        
         <Component Id="EasyHook64.dll" Guid="1545009b-c2b4-4c09-95e2-6e59600436d7">
           <File Id="EasyHook64.dll" Name="EasyHook64.dll" Source="$(var.BurntSushi.TargetDir)EasyHook64.dll" />
         </Component>
