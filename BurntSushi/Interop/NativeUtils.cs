@@ -63,7 +63,7 @@ namespace BurntSushi.Interop {
             unsafe {
                 return PInvoke.CreateWindowEx(
                      default,
-                     lpClassName: "STATIC", // pre-defined message class
+                     lpClassName: "STATIC", // pre-defined window class for buttons and other ui elements
                      default,
                      default,
                      default,
