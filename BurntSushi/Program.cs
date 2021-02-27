@@ -14,6 +14,7 @@ namespace BurntSushi {
         private static BurntSushi? sushi;
 
         public static void Main() {
+            using var exitEvent = new ManualResetEvent(initialState: false);
             using var cts = new CancellationTokenSource();
 
             // close console and attach to parent
@@ -32,7 +33,9 @@ namespace BurntSushi {
                     case Constants.CTRL_SHUTDOWN_EVENT:
                     case Constants.CTRL_CLOSE_EVENT:
                         Stop();
-                        return true;
+                        // wait for shutdown and cleanup
+                        exitEvent.WaitOne(TimeSpan.FromSeconds(5));
+                        return false;
                     default:
                         return false;
                 }
@@ -60,6 +63,7 @@ namespace BurntSushi {
             }
 
             Log.CloseAndFlush();
+            exitEvent.Set();
 
             void Stop() {
                 if (cts.IsCancellationRequested)
