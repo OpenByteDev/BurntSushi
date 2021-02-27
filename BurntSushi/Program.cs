@@ -78,7 +78,7 @@ namespace BurntSushi {
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console(minLogLevel, outputTemplate)
-                .WriteTo.File(logFilePath, minLogLevel, outputTemplate,
+                .WriteTo.PersistentFile(logFilePath, minLogLevel, outputTemplate,
                         fileSizeLimitBytes: 1024 * 1024,
                         retainedFileCountLimit: 5,
                         buffered: true,

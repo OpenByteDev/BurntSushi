@@ -3,12 +3,10 @@ using System.ComponentModel;
 using System.Runtime.ConstrainedExecution;
 using System.Threading;
 using BurntSushi.Interop;
-using Microsoft.Win32.SafeHandles;
 using Microsoft.Windows.Sdk;
 
 namespace BurntSushi {
     public class DummyMessagePump : CriticalFinalizerObject, IDisposable {
-        private static readonly SafeFileHandle NullFileHandle = new(default, false);
         private HWND hwnd;
         public bool IsRunning => hwnd.Value != default;
 
@@ -27,7 +25,7 @@ namespace BurntSushi {
                                 break;
                         }
                     }
-                    if (PInvoke.MsgWaitForMultipleObjects(0, NullFileHandle, false, 1000, Constants.QS_ALLEVENTS) == 0xFFFFFFFF) // WAIT_FAILED
+                    if (PInvoke.MsgWaitForMultipleObjects(default, false, 1000, Constants.QS_ALLEVENTS) == 0xFFFFFFFF) // WAIT_FAILED
                         throw new Win32Exception();
                 }
             } finally {
