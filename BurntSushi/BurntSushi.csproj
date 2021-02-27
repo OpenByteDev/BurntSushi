@@ -6,8 +6,8 @@
     <LangVersion>9</LangVersion>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <OutputType>Exe</OutputType>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <AnalysisLevel>preview</AnalysisLevel>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <AnalysisLevel>Preview</AnalysisLevel>
     <ApplicationIcon>..\Icon\icon.ico</ApplicationIcon>
   </PropertyGroup>
 

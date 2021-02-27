@@ -15,7 +15,6 @@ namespace BurntSushi {
 
         public static void Main() {
             using var cts = new CancellationTokenSource();
-            using var exitEvent = new ManualResetEvent(false);
 
             // close console and attach to parent
             // if the app is started from a console the logs are shown directly in the parent console
