@@ -67,7 +67,9 @@ namespace BurntSushi {
                     return;
 
                 Log.Information("Shutting down...");
-                cts.Cancel();
+                try {
+                    cts.Cancel();
+                } catch (ObjectDisposedException) { }
             }
         }
 
