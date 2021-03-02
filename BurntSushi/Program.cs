@@ -35,7 +35,7 @@ namespace BurntSushi {
                         Stop();
                         // wait for shutdown and cleanup
                         exitEvent.WaitOne(TimeSpan.FromSeconds(5));
-                        return false;
+                        return true;
                     default:
                         return false;
                 }
