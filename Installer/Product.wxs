@@ -95,9 +95,7 @@
         <Component Id="WildcardMatch.dll" Guid="44755bcf-af59-4f00-8b2f-ec17007aa667">
           <File Id="WildcardMatch.dll" Name="WildcardMatch.dll" Source="$(var.BurntSushi.TargetDir)WildcardMatch.dll" />
         </Component>
-        <Component Id="Serilog.Sinks.PersistentFile.dll" Guid="fd7257c0-d389-4f84-8da7-01736783e817">
-          <File Id="Serilog.Sinks.PersistentFile.dll" Name="Serilog.Sinks.PersistentFile.dll" Source="$(var.BurntSushi.TargetDir)Serilog.Sinks.PersistentFile.dll" />
-        </Component>
+        
         <Component Id="Serilog.Sinks.Console.dll" Guid="3c9e7a1b-5bbb-4f5d-840f-747cda7078e3">
           <File Id="Serilog.Sinks.Console.dll" Name="Serilog.Sinks.Console.dll" Source="$(var.BurntSushi.TargetDir)Serilog.Sinks.Console.dll" />
         </Component>
@@ -125,8 +123,6 @@
         <Component Id="Interop.dll" Guid="8ae46122-25f5-4bf7-884f-d50d78753377">
           <File Id="Interop.dll" Name="Interop.dll" Source="$(var.Interop.TargetDir)Interop.dll" />
         </Component>
-        
-        
         <Component Id="EasyHook64.dll" Guid="1545009b-c2b4-4c09-95e2-6e59600436d7">
           <File Id="EasyHook64.dll" Name="EasyHook64.dll" Source="$(var.BurntSushi.TargetDir)EasyHook64.dll" />
         </Component>
@@ -151,6 +147,9 @@
         
         <Component Id="BurntSushi.exe.config" Guid="a583ef2c-bcbd-4660-b0d1-f4c308c72c41">
           <File Id="BurntSushi.exe.config" Name="BurntSushi.exe.config" Source="$(var.BurntSushi.TargetDir)BurntSushi.exe.config" />
+        </Component>
+        <Component Id="Serilog.Sinks.File.dll" Guid="aed65b6f-5213-49c7-8321-eed7b3b1414c">
+          <File Id="Serilog.Sinks.File.dll" Name="Serilog.Sinks.File.dll" Source="$(var.BurntSushi_TargetDir)Serilog.Sinks.File.dll" />
         </Component>
         
       </ComponentGroup>
