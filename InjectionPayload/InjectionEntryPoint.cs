@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using BurntSushi.Shared;
 using EasyHook;
 using InjectionPayload.Interop;
@@ -42,6 +43,7 @@ namespace InjectionPayload {
 
                 try {
                     while (true) {
+                        Thread.Sleep(5000);
                         _server.Ping();
                     }
                 } catch {
