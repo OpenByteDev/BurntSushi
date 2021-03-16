@@ -56,7 +56,7 @@ namespace BurntSushi {
                         mutex.ReleaseMutex();
                     }
                 } else { // another instance is already running 
-                    Log.Information("Another istance is already running.");
+                    Log.Information("Another instance is already running.");
                 }
             } catch (Exception e) {
                 Log.Error(e, "Unexpected error");
@@ -102,7 +102,7 @@ namespace BurntSushi {
             listener.HookChanged += (_, __) => {
                 if (listener.IsHooked) {
                     Log.Information("Spotify hooked");
-                    Inject(listener.MainWindowProcess!);
+                    TryInject(listener.MainWindowProcess!);
                 } else {
                     Log.Information("Spotify unhooked");
                     sushi?.Dispose();
@@ -125,8 +125,20 @@ namespace BurntSushi {
             }
         }
 
+        private static void TryInject(Process process) {
+            for (var i=0; i<3; i++) {
+                try {
+                    Inject(process);
+                    return;
+                } catch(ApplicationException e) {
+                    Log.Warning($"Failed to inject into spotify process: {e}");
+                }
+            }
+            Log.Error("Repeatedly failed to inject into spotify process.");
+        }
+
         private static void Inject(Process process) {
-            Log.Information("Attempting to inject into process {0}", process.Id);
+            Log.Information($"Attempting to inject into process {process.Id}");
             sushi = BurntSushi.Inject(process);
             Log.Information("Injected");
         }
