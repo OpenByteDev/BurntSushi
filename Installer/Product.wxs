@@ -149,7 +149,7 @@
           <File Id="BurntSushi.exe.config" Name="BurntSushi.exe.config" Source="$(var.BurntSushi.TargetDir)BurntSushi.exe.config" />
         </Component>
         <Component Id="Serilog.Sinks.File.dll" Guid="aed65b6f-5213-49c7-8321-eed7b3b1414c">
-          <File Id="Serilog.Sinks.File.dll" Name="Serilog.Sinks.File.dll" Source="$(var.BurntSushi_TargetDir)Serilog.Sinks.File.dll" />
+          <File Id="Serilog.Sinks.File.dll" Name="Serilog.Sinks.File.dll" Source="$(var.BurntSushi.TargetDir)Serilog.Sinks.File.dll" />
         </Component>
         
       </ComponentGroup>
