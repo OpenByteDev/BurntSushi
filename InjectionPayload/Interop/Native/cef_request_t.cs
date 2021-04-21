@@ -7,7 +7,7 @@ namespace InjectionPayload.Interop {
     /// <summary>
     /// Structure used to represent a web request. The functions of this structure may be called on any thread.
     /// </summary>
-    // Layout taken from cef 88.2.9 - include\capi\cef_base_capi.h
+    // Layout taken from cef 88.2.9 - include\capi\cef_request_capi.h
     [StructLayout(LayoutKind.Sequential, Pack = 0)]
     internal unsafe struct cef_request_t {
         /// <summary>
