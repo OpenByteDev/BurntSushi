@@ -9,7 +9,7 @@
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
     <AnalysisLevel>Preview</AnalysisLevel>
     <ApplicationIcon>..\Icon\icon.ico</ApplicationIcon>
-    <Version>0.1.1</Version>
+    <Version>0.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
