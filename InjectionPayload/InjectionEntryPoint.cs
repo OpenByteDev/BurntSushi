@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -59,13 +61,13 @@ namespace InjectionPayload {
 
         #region Hooks
 #pragma warning disable IDE1006 // Naming Styles
-        [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
-        private unsafe delegate IntPtr cef_urlrequest_create_delegate(cef_request_t* request, IntPtr client, IntPtr request_context);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Auto, SetLastError = true)]
+        private unsafe delegate IntPtr cef_urlrequest_create_delegate(cef_request_t* request, IntPtr client, IntPtr request_context, IntPtr unknown);
 
-        [DllImport("libcef.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        private unsafe static extern IntPtr cef_urlrequest_create(cef_request_t* request, IntPtr client, IntPtr request_context);
+        [DllImport("libcef.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Auto, SetLastError = true)]
+        private unsafe static extern IntPtr cef_urlrequest_create(cef_request_t* request, IntPtr client, IntPtr request_context, IntPtr unknown);
 
-        private unsafe IntPtr cef_urlrequest_create_hook(cef_request_t* request, IntPtr client, IntPtr request_context) {
+        private unsafe IntPtr cef_urlrequest_create_hook(cef_request_t* request, IntPtr client, IntPtr request_context, IntPtr unknown) {
             try {
                 var req = new CefRequest(request);
                 var url = req.GetUrl();
@@ -81,7 +83,7 @@ namespace InjectionPayload {
             }
 
             // now call the original API...
-            return cef_urlrequest_create(request, client, request_context);
+            return cef_urlrequest_create(request, client, request_context, unknown);
         }
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
