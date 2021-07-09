@@ -10,8 +10,9 @@
 
     <Feature Id="ProductFeature" Title="Installer" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="RegistryEntries" />
     </Feature>
-    
+
     <UI Id="WixUI_InstallDir">
       <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
       <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
@@ -81,6 +82,15 @@
           </Directory>
         </Directory>
       </Directory>
+    </Fragment>
+
+    <Fragment>
+        <Component Id="RegistryEntries" Guid="6cf908cf-282a-435d-a778-ecc64d0ae748" Directory="INSTALLFOLDER">
+          <RegistryKey Root="HKCU"
+                       Key="Software\Microsoft\Windows\CurrentVersion\Run">
+            <RegistryValue Type="string" Name="BurntSushi" Value="&quot;[#BurntSushi.exe]&quot;" KeyPath="yes"/>
+          </RegistryKey>
+        </Component>
     </Fragment>
 
     <Fragment>
