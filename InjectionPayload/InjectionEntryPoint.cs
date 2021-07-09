@@ -61,13 +61,13 @@ namespace InjectionPayload {
 
         #region Hooks
 #pragma warning disable IDE1006 // Naming Styles
-        [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Auto, SetLastError = true)]
-        private unsafe delegate IntPtr cef_urlrequest_create_delegate(cef_request_t* request, IntPtr client, IntPtr request_context, IntPtr unknown);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Unicode, SetLastError = true)]
+        private unsafe delegate IntPtr cef_urlrequest_create_delegate(cef_request_t* request, IntPtr client, IntPtr request_context);
 
-        [DllImport("libcef.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Auto, SetLastError = true)]
-        private unsafe static extern IntPtr cef_urlrequest_create(cef_request_t* request, IntPtr client, IntPtr request_context, IntPtr unknown);
+        [DllImport("libcef.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode, SetLastError = true)]
+        private unsafe static extern IntPtr cef_urlrequest_create(cef_request_t* request, IntPtr client, IntPtr request_context);
 
-        private unsafe IntPtr cef_urlrequest_create_hook(cef_request_t* request, IntPtr client, IntPtr request_context, IntPtr unknown) {
+        private unsafe IntPtr cef_urlrequest_create_hook(cef_request_t* request, IntPtr client, IntPtr request_context) {
             try {
                 var req = new CefRequest(request);
                 var url = req.GetUrl();
@@ -83,13 +83,13 @@ namespace InjectionPayload {
             }
 
             // now call the original API...
-            return cef_urlrequest_create(request, client, request_context, unknown);
+            return cef_urlrequest_create(request, client, request_context);
         }
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
         private delegate int getaddrinfo_delegate(IntPtr node, IntPtr service, IntPtr hints, IntPtr res);
 
-        [DllImport("WS2_32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        [DllImport("WS2_32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
         private static extern int getaddrinfo(IntPtr node, IntPtr service, IntPtr hints, IntPtr res);
 
         private int get_addr_info_hook(IntPtr node, IntPtr service, IntPtr hints, IntPtr res) {
