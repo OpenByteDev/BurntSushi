@@ -5,7 +5,7 @@ namespace InjectionPayload {
         // mostly copied from https://github.com/abba23/spotify-adblock-linux
 
         // blacklist for cef_urlrequest_create
-        public static List<string> Blacklist = new() {
+        public static readonly string[] Blacklist = new[] {
             "https://spclient.wg.spotify.com/ads/*", // ads
             "https://spclient.wg.spotify.com/ad-logic/*", // ads
             "https://spclient.wg.spotify.com/gabo-receiver-service/*", // tracking
@@ -16,7 +16,7 @@ namespace InjectionPayload {
         };
 
         // whitelist for getaddrinfo
-        public static List<string> Whitelist = new() {
+        public static readonly string[] Whitelist = new[] {
             "localhost", // local proxies
             "audio-sp-*.pscdn.co", // audio
             "audio-fa.scdn.co", // audio
