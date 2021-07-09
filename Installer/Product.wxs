@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Id="*" Name="BurntSushi" Language="1033" Version="!(bind.fileVersion.BurntSushi.exe)" Manufacturer="OpenByte" UpgradeCode="5974f073-e8d0-4c72-a6b2-dcf7affa8e11">
-    <Package InstallerVersion="200" Compressed="yes" InstallPrivileges="elevated" />
+    <Package InstallerVersion="500" Compressed="yes" InstallPrivileges="elevated" />
     <MajorUpgrade AllowDowngrades="no" AllowSameVersionUpgrades="no" DowngradeErrorMessage="A new version is already installed." />
 
     <MediaTemplate EmbedCab="yes" />
