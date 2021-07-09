@@ -113,6 +113,7 @@ namespace BurntSushi {
         }
 
         private static Func<uint, Process>? getProcessByIdFastFunc;
+
         private static Process GetProcessByIdFast(uint processId) {
             getProcessByIdFastFunc ??= CompileGetProcessByIdFastFunc();
 
@@ -179,9 +180,6 @@ namespace BurntSushi {
             if (MainWindowProcess == null)
                 return;
 
-            // if (!MainWindowProcess.HasExited)
-            //    return;
-
             OnSpotifyClosed();
         }
 
@@ -238,11 +236,26 @@ namespace BurntSushi {
             HookChanged?.Invoke(this, eventArgs);
         }
 
-        public void Dispose() {
-            GC.SuppressFinalize(this);
-            MainWindowProcess?.Dispose();
-            _windowCreationEventHook?.Dispose();
-            _windowDestructionEventHook?.Dispose();
+        #region IDisposable
+        private bool isDisposed;
+
+        protected virtual void Dispose(bool disposing) {
+            if (!isDisposed) {
+                if (disposing) {
+                    MainWindowProcess?.Dispose();
+                    _windowCreationEventHook?.Dispose();
+                    _windowDestructionEventHook?.Dispose();
+                }
+
+                isDisposed = true;
+            }
         }
+
+        public void Dispose() {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

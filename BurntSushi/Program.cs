@@ -72,7 +72,10 @@ namespace BurntSushi {
                 Log.Information("Shutting down...");
                 try {
                     cts.Cancel();
-                } catch (ObjectDisposedException) { }
+                } catch (ObjectDisposedException) {
+                    // we dont care about the error as this just means that the cts wa
+                    // already canceled and disposed which we wanted to do anyway
+                }
             }
         }
 

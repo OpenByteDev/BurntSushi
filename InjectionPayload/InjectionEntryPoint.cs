@@ -41,12 +41,9 @@ namespace InjectionPayload {
 
                 _server.LogInfo("Hooks installed");
 
-                try {
-                    while (true) {
-                        Thread.Sleep(5000);
-                        _server.Ping();
-                    }
-                } catch {
+                while (true) {
+                    Thread.Sleep(5000);
+                    _server.Ping();
                 }
             } catch (Exception e) {
                 TryLogException(e);
@@ -110,8 +107,6 @@ namespace InjectionPayload {
         #endregion Hooks
 
         #region Log Helpers
-        [SuppressMessage("Design", "RCS1075:Avoid empty catch clause that catches System.Exception.",
-            Justification = "Only used if error during error reporting; exception would crash the host app")]
         private void TryLogException(Exception e) {
             try {
                 _server.LogException(e);

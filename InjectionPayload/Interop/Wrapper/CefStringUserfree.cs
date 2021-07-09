@@ -11,7 +11,7 @@ namespace InjectionPayload {
 
         public override string? ToString() {
             if (underlying is null)
-                return null;
+                return string.Empty;
             return new string(underlying->_str, 0, (int)underlying->_length);
         }
 
