@@ -144,8 +144,9 @@ namespace BurntSushi {
             // avoid semi costly validation checks
             var process = GetProcessByIdFast(processId);
 
-            // confirm that its a spotify process with a window.
-            if (!SpotifyUtils.IsMainSpotifyWindow(windowHandle)) {
+            // confirm that the window is from a spotify process and that this is the main window.
+            if (!SpotifyUtils.IsSpotifyProcess(process) ||
+                !SpotifyUtils.IsMainSpotifyWindow(windowHandle)) {
                 process.Dispose();
                 return;
             }
