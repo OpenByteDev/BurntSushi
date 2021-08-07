@@ -24,7 +24,7 @@ namespace BurntSushi {
 
             // inject into existing process
             RemoteHooking.Inject(
-                process.Id,          // ID of process to inject into
+                process.Id,         // ID of process to inject into
                 injectionLibrary,   // 32-bit library to inject (if target is 32-bit)
                 injectionLibrary,   // 64-bit library to inject (if target is 64-bit)
                 channelName         // the parameters to pass into injected library
