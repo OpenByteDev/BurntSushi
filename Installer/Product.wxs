@@ -102,9 +102,6 @@
         <Component Id="System.Numerics.Vectors.dll" Guid="24f88eec-ad64-4285-8e15-970e3ce42155">
           <File Id="System.Numerics.Vectors.dll" Name="System.Numerics.Vectors.dll" Source="$(var.BurntSushi.TargetDir)System.Numerics.Vectors.dll" />
         </Component>
-        <Component Id="WildcardMatch.dll" Guid="44755bcf-af59-4f00-8b2f-ec17007aa667">
-          <File Id="WildcardMatch.dll" Name="WildcardMatch.dll" Source="$(var.BurntSushi.TargetDir)WildcardMatch.dll" />
-        </Component>
         
         <Component Id="Serilog.Sinks.Console.dll" Guid="3c9e7a1b-5bbb-4f5d-840f-747cda7078e3">
           <File Id="Serilog.Sinks.Console.dll" Name="Serilog.Sinks.Console.dll" Source="$(var.BurntSushi.TargetDir)Serilog.Sinks.Console.dll" />
