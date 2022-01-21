@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using BurntSushi.Shared;
 using EasyHook;
 using InjectionPayload.Interop;
-using WildcardMatch;
 
 namespace InjectionPayload {
     public class MySimpleEntryPoint : IEntryPoint {
@@ -67,7 +65,7 @@ namespace InjectionPayload {
                 var req = new CefRequest(request);
                 var url = req.GetUrl();
                 if (url != null) {
-                    var block = RequestFilter.Blacklist.Any(pattern => pattern.WildcardMatch(url, true));
+                    var block = RequestFilter.Blacklist.Any(pattern => pattern.IsMatch(url));
                     LogRequest(nameof(cef_urlrequest_create), url, block);
                     if (block)
                         return IntPtr.Zero;
@@ -91,7 +89,7 @@ namespace InjectionPayload {
             try {
                 var url = Marshal.PtrToStringAnsi(node);
 
-                var block = !RequestFilter.Whitelist.Any(pattern => pattern.WildcardMatch(url, true));
+                var block = !RequestFilter.Whitelist.Any(pattern => pattern.IsMatch(url));
                 LogRequest(nameof(getaddrinfo), url, block);
                 if (block)
                     return 0;
