@@ -1,3 +1,5 @@
+# This project has been deprecated in favor of its rewrite in Rust (https://github.com/OpenByteDev/burnt-sushi).
+
 # <img src="https://github.com/OpenByteDev/BurntSushi/blob/master/Icon/icon.png" height="40px" /> BurntSushi 
 
 [![Build](https://github.com/OpenByteDev/BurntSushi/actions/workflows/build.yml/badge.svg)](https://github.com/OpenByteDev/BurntSushi/actions/workflows/build.yml)
